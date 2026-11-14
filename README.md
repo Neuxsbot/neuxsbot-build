@@ -27,6 +27,8 @@ NEUXSBOT 是面向短剧、漫剧与视频创作者的 AI 创作工作台。它�
 
 安装与版本说明见各版本发布说明。Windows 下载后运行安装程序；macOS 将应用拖入“应用程序”；Android 打开 APK 并按系统提示安装。
 
+macOS 安装包可能未经过 Apple Developer ID 签名与公证；未签名版本首次打开时，系统可能显示安全提示。请确认安装包来自 NEUXSBOT 官方发布页。
+
 ### 搜索关键词
 
 NEUXSBOT、纽斯博特、AI 创作软件、AI 创作工作台、AI 短剧制作、AI 漫剧创作、AI 视频创作软件、AI 视频生成、AI 生图工具、AI 图片生成、剧本创作软件、分镜设计、角色设定、视觉画布、节点式工作流、AI Agent、MCP 插件、Windows AI 软件、Mac AI 创作软件、Android AI 创作应用。
@@ -55,6 +57,8 @@ Visit [the latest release](https://github.com/Neuxsbot/neuxsbot-build/releases/l
 - Android ARM64: `neuxsbot-X.Y.Z-android-arm64.apk`
 
 See each release for installation and version details. Run the Windows installer, move the macOS app to Applications, or open the APK on Android and follow the system installation prompt.
+
+macOS packages may not be signed and notarized with an Apple Developer ID. Unsigned builds may show a system security prompt on first launch. Verify that the installer came from the official NEUXSBOT release page.
 
 ### Search keywords
 
