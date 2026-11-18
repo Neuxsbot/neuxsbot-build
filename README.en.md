@@ -1,32 +1,46 @@
 # NEUXSBOT | AI Creative Workbench
 
-简体中文版：[README.md](README.md)
+简体中文：[README.md](README.md)
 
-NEUXSBOT is an AI creative workbench for short-form drama, manga-style video, and visual storytelling. It brings story development, text-model conversations, character and scene assets, AI image generation, and video workflows into one extensible canvas, with desktop and Android clients.
+NEUXSBOT is an AI creative workbench for short-form drama, manga-style video, animation, and visual storytelling. It brings story development, script writing, character and scene planning, storyboards, and image and video production into one visual project workspace. Creators can organize ideas, build production steps, and keep related media together as a project grows.
 
-## Creative Workflow
+## Product Preview
 
-- **Visual canvas and project workspace**: Organize text, image, video, and audio assets in projects and build reusable creative workflows.
-- **Text-model conversations**: Connect compatible language-model services for story ideation, script writing, character development, and revisions.
-- **Image and video workflows**: Use configured model providers for AI image generation and video creation, with generated assets managed by project.
-- **Extensibility and automation**: Extend workflows with nodes, tools, plugins, Agents, and MCP integrations.
-- **Cross-platform clients**: Download builds for Windows x64, macOS Apple silicon, macOS Intel, and Android ARM64.
+![NEUXSBOT creative workbench](assets/neuxsbot-workbench.webp)
 
-Model access and media generation are provided by services configured by the user. Available models, account requirements, network access, and usage costs depend on the selected provider.
+![NEUXSBOT plugin marketplace](assets/neuxsbot-plugin-market.webp)
 
-## Download
+![NEUXSBOT team workflow](assets/neuxsbot-team-workflow.webp)
 
-Visit [the latest release](https://github.com/Neuxsbot/neuxsbot-build/releases/latest) and choose the installer for your device:
+## Creative Capabilities
 
-- Windows 64-bit: `neuxsbot-X.Y.Z-Setup.exe`
-- macOS Apple silicon: `arm64` DMG
-- macOS Intel: `x64` DMG
-- Android ARM64: `neuxsbot-X.Y.Z-android-arm64.apk`
+- **Projects and visual canvas**: Organize text, images, video, and audio in projects, inspect how assets relate, and arrange creative steps in a visual workflow.
+- **Writing and model conversations**: Connect compatible language-model services to support ideation, character profiles, story outlines, script revisions, and dialogue polishing.
+- **Image and video production**: Connect configured image and video models, create visual assets, and bring results back into projects for further arrangement.
+- **Nodes, plugins, and automation**: Extend workflows with nodes, tools, plugins, Agents, and MCP integrations, and organize repeatable steps into reusable processes.
+- **Desktop and mobile clients**: Available for Windows x64, macOS Apple silicon, macOS Intel, and Android ARM64.
 
-See each release for installation and version details. Run the Windows installer, move the macOS app to Applications, or open the APK on Android and follow the system installation prompt.
+The desktop app and web client provide access to the same NEUXSBOT workbench and membership service. Local projects, canvas content, and workflows organize the creative process. Text, image, and video models are selected through configured providers; model availability, access, and pricing depend on each provider's configuration.
 
-macOS packages may not be signed and notarized with an Apple Developer ID. Unsigned builds may show a system security prompt on first launch. Verify that the installer came from the official NEUXSBOT release page.
+## Use Cases
+
+Use NEUXSBOT for AI short-drama production, manga and motion-comic creation, novel adaptation support, script and dialogue development, character design, scene planning, storyboarding, AI image generation, AI video workflows, and visual content-workflow management for individual creators or teams.
+
+Models are provided by services configured by the user. Model availability, account requirements, network access, and usage costs depend on the selected provider and its current configuration. Check the provider's terms and pricing before use.
+
+## Downloads and Installation
+
+Visit the [latest NEUXSBOT release](https://github.com/Neuxsbot/neuxsbot-build/releases/latest) and choose the package for your device:
+
+- Windows 64-bit: `neuxsbot-X.Y.Z-Setup.exe`, the complete standalone installer.
+- macOS Apple silicon: DMG with `arm64` in its filename.
+- macOS Intel: DMG with `x64` in its filename.
+- Android ARM64: `neuxsbot-X.Y.Z-android-arm64.apk`.
+
+On Windows, run the versioned standalone installer; do not run the small bootstrapper inside `win-x64-neuxsbot-Setup.zip` by itself. On macOS, move the app to Applications. On Android, open the APK and follow the system installation prompt. See each release for version requirements and changes.
+
+Whether a macOS package is signed and notarized with an Apple Developer ID depends on that build's configuration. Unsigned builds may show a security prompt on first launch. Download installers from the official NEUXSBOT release page.
 
 ## Search Keywords
 
-NEUXSBOT, AI creative workbench, AI video creation, AI short drama, manga video creation, AI image generation, AI video generation workflow, script writing software, storyboarding, character design, visual canvas, node-based workflow, AI Agent, MCP plugins, Windows AI app, Mac creative software, Android AI creative app.
+NEUXSBOT, AI creative workbench, AI creation software, AI short drama production, short-form drama, manga video creation, motion comics, AI animation workflow, novel adaptation, AI script writing, screenplay writing software, storyboard software, character design, scene planning, AI image generation, AI video generation, visual canvas, node-based workflow, AI Agent, MCP plugins, Windows AI creative app, Mac creative software, Android AI creation app.
