@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="117" y1="44" x2="1360" y2="930" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101B31"/><stop offset=".52" stop-color="#482F56"/><stop offset="1" stop-color="#E27A5D"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="0" cy="0" r="1" gradientTransform="matrix(0 285 -285 0 1114 281)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1D0"/><stop offset=".72" stop-color="#F2B98D"/><stop offset="1" stop-color="#E58D78" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cape" x1="441" y1="554" x2="918" y2="930" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#222B4A"/><stop offset=".55" stop-color="#11172B"/><stop offset="1" stop-color="#572C47"/>
+    </linearGradient>
+    <linearGradient id="face" x1="688" y1="319" x2="824" y2="528" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD8B3"/><stop offset="1" stop-color="#CA796D"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="555" y1="291" x2="945" y2="715" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#151526"/><stop offset=".62" stop-color="#24223B"/><stop offset="1" stop-color="#5C304D"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="260" y1="783" x2="535" y2="169" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63D4C4"/><stop offset="1" stop-color="#E6FFF3"/>
+    </linearGradient>
+    <pattern id="stars" width="91" height="83" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="18" r="1.5" fill="#FFF6DE" fill-opacity=".74"/><circle cx="67" cy="54" r="1" fill="#FFF6DE" fill-opacity=".46"/>
+    </pattern>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1600v900H0z"/>
+  <path fill="url(#stars)" d="M0 0h1600v900H0z"/>
+  <circle cx="1113" cy="282" r="277" fill="url(#moon)"/>
+  <circle cx="1113" cy="282" r="182" fill="#F4D8B1" fill-opacity=".82"/>
+  <path d="M1113 100a182 182 0 0 1 157 90c-75-30-162-22-232 30-55 41-90 99-103 162-4-20-6-41-4-62 10-122 116-220 182-220Z" fill="#E5A47F" fill-opacity=".42"/>
+  <path d="M0 656 174 578l114 62 164-185 101 155 161-115 155 146 156-167 157 127 129-100 249 153v246H0V656Z" fill="#252A46" fill-opacity=".78"/>
+  <path d="m0 760 200-84 123 62 118-117 115 114 145-95 97 90 134-117 144 108 123-99 161 88 140-74v264H0V760Z" fill="#171D32"/>
+  <path d="M0 827c252-50 441-50 626-19 244 42 506 47 974-64v156H0V827Z" fill="#111726"/>
+  <path d="M791 444c-94 31-163 114-190 232l-78 224h466l-77-240c-19-94-49-161-121-216Z" fill="url(#cape)"/>
+  <path d="M710 483c-48 27-76 71-107 148l-84 269h91l148-253 97 253h112l-83-286c-31-90-86-126-174-131Z" fill="#313450"/>
+  <path d="M648 360c2-89 52-145 129-145 72 0 121 51 126 140l-10 106c-7 72-50 120-116 120-71 0-116-56-126-130l-3-91Z" fill="url(#face)"/>
+  <path d="M625 391c-21-136 31-225 127-243 120-22 207 48 190 196-20-47-47-80-87-106-42 54-111 78-203 73l-27 80Z" fill="url(#hair)"/>
+  <path d="M641 389c-16 155 10 255 94 336l-91 87-66-143c-39-87-38-211 6-294l57 14Z" fill="url(#hair)"/>
+  <path d="M888 367c30 90 24 214-19 316l-57 130 82-58c93-66 137-203 111-323-14-65-50-120-106-156l-11 91Z" fill="url(#hair)"/>
+  <path d="M677 418c25 11 43 11 64-1M790 417c24 12 45 11 66-3" stroke="#5A3540" stroke-width="7" stroke-linecap="round"/>
+  <path d="M765 432c-7 26-13 45-21 57 11 9 26 10 39 3M715 515c33 18 68 18 101-2" stroke="#9C554F" stroke-width="6" stroke-linecap="round"/>
+  <path d="M671 377c39-30 87-54 145-85M647 332c-12-70 5-124 51-162M900 301c30 47 46 95 48 145" stroke="#D69A8A" stroke-opacity=".48" stroke-width="8" stroke-linecap="round"/>
+  <path d="m515 900 179-604 18 7-119 597h-78Z" fill="url(#blade)" fill-opacity=".94"/>
+  <path d="m467 466 82-33 48 80-97 41-33-88Z" fill="#D7B57E"/>
+  <path d="M516 445 572 476" stroke="#F4E3B9" stroke-width="8"/>
+  <path d="M0 0h1600v900H0z" stroke="#F5DEC3" stroke-opacity=".12" stroke-width="2"/>
+</svg>
