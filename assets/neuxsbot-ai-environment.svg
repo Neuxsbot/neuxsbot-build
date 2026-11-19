@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="dawn" x1="809" y1="0" x2="797" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#192642"/><stop offset=".42" stop-color="#5D7891"/><stop offset=".69" stop-color="#E7A77F"/><stop offset="1" stop-color="#F3D09A"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientTransform="matrix(0 235 -235 0 1088 342)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1C4"/><stop offset=".72" stop-color="#F9CB91" stop-opacity=".82"/><stop offset="1" stop-color="#F9CB91" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="water" x1="751" y1="526" x2="762" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#405F76"/><stop offset="1" stop-color="#182C45"/>
+    </linearGradient>
+    <linearGradient id="tower" x1="690" y1="265" x2="896" y2="742" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E5BE9A"/><stop offset="1" stop-color="#7F6474"/>
+    </linearGradient>
+    <pattern id="grain" width="72" height="72" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="12" r="1.2" fill="#FFF4DD" fill-opacity=".25"/><circle cx="48" cy="43" r="1" fill="#FFF4DD" fill-opacity=".22"/>
+    </pattern>
+  </defs>
+  <path fill="url(#dawn)" d="M0 0h1600v900H0z"/>
+  <circle cx="1088" cy="342" r="225" fill="url(#sun)"/>
+  <circle cx="1088" cy="342" r="107" fill="#F9DBAA" fill-opacity=".9"/>
+  <path d="m0 502 189-157 145 111 169-231 166 204 130-125 148 182 146-195 167 191 164-151 176 163v228H0V502Z" fill="#53647C" fill-opacity=".66"/>
+  <path d="m0 596 191-151 132 98 179-168 188 195 114-101 173 139 165-185 152 169 145-112 161 139v181H0V596Z" fill="#41536E"/>
+  <path d="M0 655c163-42 291-20 411 19 155 50 280 37 438-9 201-58 387-82 751-1v236H0V655Z" fill="url(#water)"/>
+  <path d="M917 535h354l-25 20H929l-12-20Z" fill="#F1C48F" fill-opacity=".62"/>
+  <path d="M880 585h493l-25 13H901l-21-13ZM822 646h615l-37 14H842l-20-14ZM914 712h468l-33 10H927l-13-10ZM733 784h779l-44 13H761l-28-13Z" fill="#EEC697" fill-opacity=".35"/>
+  <path d="M317 627h250l-16-155 42-42-151-106-151 106 42 42-16 155Z" fill="#222D47"/>
+  <path d="m292 464 150-124 150 124H292Z" fill="#A87367"/>
+  <path d="m352 403 90-74 90 74" stroke="#F0C495" stroke-width="8"/>
+  <path d="M372 479h137v148H372z" fill="#E4AE80"/>
+  <path d="M391 504h36v56h-36zM454 504h36v56h-36z" fill="#354C64"/>
+  <path d="M441 579c-16 0-29 13-29 29v19h58v-19c0-16-13-29-29-29Z" fill="#354C64"/>
+  <path d="M664 718V355h47V257h151v98h46v363H664Z" fill="url(#tower)"/>
+  <path d="m649 362 137-131 137 131H649Z" fill="#BB8A79"/>
+  <path d="m696 302 90-88 90 88" stroke="#F2D3A6" stroke-width="10"/>
+  <path d="M735 405h51v80h-51zM817 405h51v80h-51zM735 527h51v80h-51zM817 527h51v80h-51z" fill="#34465E"/>
+  <path d="M773 620c-22 0-40 18-40 40v58h80v-58c0-22-18-40-40-40Z" fill="#34465E"/>
+  <path d="M742 256h56v-83h-56z" fill="#DDAB83"/>
+  <path d="M757 183h27v-55h-27zM750 129h42v-10h-42z" fill="#F0CCA0"/>
+  <path d="M0 836c232-45 381-35 552-2 202 40 368 14 552-13 155-23 311-27 496-2v81H0v-64Z" fill="#16263E"/>
+  <path d="M0 0h1600v900H0z" fill="url(#grain)"/>
+</svg>
