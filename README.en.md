@@ -4,13 +4,15 @@
 
 NEUXSBOT is an AI creative workbench for short-form drama, manga-style video, animation, and visual storytelling. It brings story development, script writing, character and scene planning, storyboards, and image and video production into one visual project workspace. Creators can organize ideas, build production steps, and keep related media together as a project grows.
 
-## Product Preview
+## AI Image Creation Inspiration
 
-![NEUXSBOT creative workbench](assets/neuxsbot-workbench.webp)
+Develop a written idea into visual material, from character concepts and scene moods to connected storyboard frames.
 
-![NEUXSBOT plugin marketplace](assets/neuxsbot-plugin-market.webp)
+![Original character concept: traveler beneath the moon](assets/neuxsbot-ai-character.svg)
 
-![NEUXSBOT team workflow](assets/neuxsbot-team-workflow.webp)
+![Original environment concept: city above the clouds](assets/neuxsbot-ai-environment.svg)
+
+![Original storyboard mood study: the last train](assets/neuxsbot-ai-storyboard.svg)
 
 ## Creative Capabilities
 
