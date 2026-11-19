@@ -1,0 +1,247 @@
+name: Release NEUXSBOT
+run-name: Release NEUXSBOT ${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 发布版本号（X.Y.Z）
+        type: string
+        required: true
+      ref:
+        description: 私有源码仓库的分支、标签或提交
+        type: string
+        default: c161cc37519bc4b1d23f747718015c1ae2e758ee
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neuxsbot-release
+  cancel-in-progress: false
+
+jobs:
+  verify-public-destination:
+    name: 检查公开安装包仓库
+    runs-on: ubuntu-24.04
+    outputs:
+      repository: ${{ steps.destination.outputs.repository }}
+      branch: ${{ steps.destination.outputs.branch }}
+    steps:
+      - name: 确认当前仓库可用于发布
+        id: destination
+        env:
+          GH_TOKEN: ${{ github.token }}
+          repository: ${{ github.repository }}
+          branch: ${{ github.event.repository.default_branch }}
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync } from "node:fs";
+
+          const repository = process.env.repository ?? "";
+          const branch = process.env.branch ?? "";
+          const response = await fetch(`https://api.github.com/repos/${repository}`, {
+            headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: "application/vnd.github+json" },
+            signal: AbortSignal.timeout(30000),
+          });
+          if (!response.ok) throw new Error(`无法验证发布仓库（HTTP ${response.status}）。`);
+          const details = await response.json();
+          if (details.private || details.owner?.login?.toLowerCase() !== "neuxsbot") throw new Error("拒绝发布：当前仓库必须是 Neuxsbot 名下的公开仓库。");
+          if (!branch) throw new Error("公开安装包仓库没有默认分支。");
+          appendFileSync(process.env.GITHUB_OUTPUT, `repository=${repository}\nbranch=${branch}\n`);
+          JS
+
+  build:
+    name: 构建所有平台版本
+    needs: verify-public-destination
+    uses: ./.github/workflows/debug.yml
+    with:
+      target: all
+      ref: ${{ inputs.ref || 'c161cc37519bc4b1d23f747718015c1ae2e758ee' }}
+      version: ${{ inputs.version }}
+      generatePatch: false
+      androidRelease: true
+    secrets:
+      SOURCE_READ_KEY: ${{ secrets.SOURCE_READ_KEY }}
+      MACOS_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
+      MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+      MACOS_NOTARIZATION_KEY_ID: ${{ secrets.MACOS_NOTARIZATION_KEY_ID }}
+      MACOS_NOTARIZATION_ISSUER_ID: ${{ secrets.MACOS_NOTARIZATION_ISSUER_ID }}
+      MACOS_NOTARIZATION_KEY_BASE64: ${{ secrets.MACOS_NOTARIZATION_KEY_BASE64 }}
+
+  release:
+    name: 发布四端安装包并更新说明页
+    needs: [verify-public-destination, build]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: Neuxsbot/neuxsbot-src
+          ref: ${{ needs.build.outputs.commit }}
+          ssh-key: ${{ secrets.SOURCE_READ_KEY }}
+          persist-credentials: false
+      - name: 确认版本号尚未发布
+        env:
+          GH_TOKEN: ${{ github.token }}
+          releaseVersion: ${{ needs.build.outputs.version }}
+        run: |
+          node --input-type=module <<'JS'
+          const version = process.env.releaseVersion ?? "";
+          if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error("发布版本号必须为 X.Y.Z。");
+          const response = await fetch(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/git/ref/tags/v${version}`, {
+            headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: "application/vnd.github+json" },
+            signal: AbortSignal.timeout(30000),
+          });
+          if (response.status !== 404) {
+            if (!response.ok) throw new Error(`检查版本标签失败（HTTP ${response.status}）。`);
+            throw new Error(`v${version} 已存在，拒绝覆盖已发布版本。`);
+          }
+          JS
+      - name: 下载各平台产物
+        uses: actions/download-artifact@v8
+        with:
+          pattern: neuxsbot-${{ needs.build.outputs.version }}-*
+          path: artifacts
+          merge-multiple: true
+      - name: 验证四端安装包唯一且非空
+        env:
+          releaseVersion: ${{ needs.build.outputs.version }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readdirSync, statSync } from "node:fs";
+
+          const version = process.env.releaseVersion ?? "";
+          const files = readdirSync("artifacts").filter(name => statSync(`artifacts/${name}`).isFile());
+          const required = [
+            { label: "Windows x64", match: name => name === `neuxsbot-${version}-Setup.exe` },
+            { label: "macOS ARM64", match: name => name.endsWith(".dmg") && name.includes("arm64") },
+            { label: "macOS Intel x64", match: name => name.endsWith(".dmg") && name.includes("x64") },
+            { label: "Android ARM64", match: name => name === `neuxsbot-${version}-android-arm64.apk` },
+          ];
+          for (const item of required) {
+            const names = files.filter(item.match);
+            if (names.length !== 1) throw new Error(`${item.label} 安装包数量应为 1，实际为 ${names.length}`);
+            if (statSync(`artifacts/${names[0]}`).size <= 0) throw new Error(`${item.label} 安装包为空`);
+            console.log(`${item.label}: ${names[0]}`);
+          }
+          JS
+      - name: 生成发布说明
+        env:
+          releaseVersion: ${{ needs.build.outputs.version }}
+          releaseRepository: ${{ needs.verify-public-destination.outputs.repository }}
+          releaseBranch: ${{ needs.verify-public-destination.outputs.branch }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readdirSync, writeFileSync } from "node:fs";
+
+          const files = readdirSync("artifacts");
+          const version = process.env.releaseVersion ?? "";
+          const find = (label, matches) => {
+            const names = files.filter(matches);
+            if (names.length !== 1) throw new Error(`${label} 安装包数量应为 1，实际为 ${names.length}`);
+            return names[0];
+          };
+          const windows = find("Windows", name => name === `neuxsbot-${version}-Setup.exe`);
+          const macArm = find("macOS ARM64", name => name.endsWith(".dmg") && name.includes("arm64"));
+          const macIntel = find("macOS Intel", name => name.endsWith(".dmg") && name.includes("x64"));
+          const android = find("Android ARM64", name => name === `neuxsbot-${version}-android-arm64.apk`);
+          const baseUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.releaseRepository}/releases/download/v${version}`;
+          const previewUrl = `https://raw.githubusercontent.com/${process.env.releaseRepository}/${encodeURIComponent(process.env.releaseBranch)}/assets`;
+          const download = name => `${baseUrl}/${encodeURIComponent(name)}`;
+          writeFileSync("releaseBody.md", [
+            "# NEUXSBOT | AI 创作工作台",
+            "",
+            "面向短剧、漫剧和视频创作者的可视化工作台。从角色与场景概念，到分镜和图片、视频素材，把创作过程组织在一个项目中。",
+            "",
+            `![原创角色概念图](${previewUrl}/neuxsbot-ai-character.svg)`,
+            "",
+            `![原创场景概念图](${previewUrl}/neuxsbot-ai-environment.svg)`,
+            "",
+            `![原创分镜气氛图](${previewUrl}/neuxsbot-ai-storyboard.svg)`,
+            "",
+            "## 创作工作流",
+            "",
+            "1. 在项目中整理故事、角色、场景和参考素材。",
+            "2. 连接已配置的文本、图片或视频模型，选择模型及其支持的尺寸与参数。",
+            "3. 在画布和节点中组织生成步骤，将结果保存回项目继续编辑和编排。",
+            "",
+            "支持 Windows x64、macOS Apple 芯片、macOS Intel 与 Android ARM64。模型可用性与调用费用取决于用户配置的服务。",
+            "",
+            `## NEUXSBOT ${version} 下载`,
+            "",
+            "| 平台 | 安装包 |",
+            "| --- | --- |",
+            `| Windows x64 | [下载完整安装器](${download(windows)}) |`,
+            `| macOS Apple 芯片 | [下载 DMG](${download(macArm)}) |`,
+            `| macOS Intel | [下载 DMG](${download(macIntel)}) |`,
+            `| Android ARM64 | [下载 APK](${download(android)}) |`,
+            "",
+            `完整产品说明：[README.md](https://github.com/${process.env.releaseRepository}/blob/${process.env.releaseBranch}/README.md) · [English](https://github.com/${process.env.releaseRepository}/blob/${process.env.releaseBranch}/README.en.md)`,
+            "",
+          ].join("\n"));
+          JS
+      - name: 发布 GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          repository: ${{ needs.verify-public-destination.outputs.repository }}
+          token: ${{ github.token }}
+          tag_name: v${{ needs.build.outputs.version }}
+          name: NEUXSBOT ${{ needs.build.outputs.version }}
+          make_latest: true
+          body_path: releaseBody.md
+          generate_release_notes: false
+          fail_on_unmatched_files: true
+          files: artifacts/*
+      - name: 同步公开产品说明并清理官网页面截图
+        env:
+          GH_TOKEN: ${{ github.token }}
+          releaseRepository: ${{ needs.verify-public-destination.outputs.repository }}
+          releaseBranch: ${{ needs.verify-public-destination.outputs.branch }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from "node:fs";
+
+          const repository = process.env.releaseRepository;
+          const branch = process.env.releaseBranch;
+          const headers = { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+          const files = [
+            { path: "README.md", source: "docs/publicRelease/README.md" },
+            { path: "README.en.md", source: "docs/publicRelease/README.en.md" },
+            ...["neuxsbot-ai-character.svg", "neuxsbot-ai-environment.svg", "neuxsbot-ai-storyboard.svg"].map(name => ({ path: `assets/${name}`, source: `docs/publicRelease/assets/${name}` })),
+          ];
+          for (const { path, source } of files) {
+            const content = readFileSync(source);
+            const url = `https://api.github.com/repos/${repository}/contents/${path}?ref=${encodeURIComponent(branch)}`;
+            const currentResponse = await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
+            let sha;
+            if (currentResponse.status !== 404) {
+              if (!currentResponse.ok) throw new Error(`读取公开仓库 ${path} 失败（HTTP ${currentResponse.status}）。`);
+              const current = await currentResponse.json();
+              sha = current.sha;
+              if (Buffer.from(current.content.replace(/\s/g, ""), "base64").equals(content)) continue;
+            }
+            const response = await fetch(`https://api.github.com/repos/${repository}/contents/${path}`, {
+              method: "PUT", headers,
+              body: JSON.stringify({ message: "docs: publish creative workflow overview", content: content.toString("base64"), branch, ...(sha ? { sha } : {}) }),
+              signal: AbortSignal.timeout(30000),
+            });
+            if (!response.ok) throw new Error(`更新公开仓库 ${path} 失败（HTTP ${response.status}）。`);
+            console.log(`已更新 ${path}。`);
+          }
+          for (const path of ["assets/neuxsbot-workbench.webp", "assets/neuxsbot-plugin-market.webp", "assets/neuxsbot-team-workflow.webp"]) {
+            const url = `https://api.github.com/repos/${repository}/contents/${path}?ref=${encodeURIComponent(branch)}`;
+            const currentResponse = await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
+            if (currentResponse.status === 404) continue;
+            if (!currentResponse.ok) throw new Error(`读取旧预览图 ${path} 失败（HTTP ${currentResponse.status}）。`);
+            const current = await currentResponse.json();
+            const response = await fetch(`https://api.github.com/repos/${repository}/contents/${path}`, {
+              method: "DELETE", headers,
+              body: JSON.stringify({ message: "docs: remove obsolete website screenshots", sha: current.sha, branch }),
+              signal: AbortSignal.timeout(30000),
+            });
+            if (!response.ok) throw new Error(`删除旧预览图 ${path} 失败（HTTP ${response.status}）。`);
+            console.log(`已清理 ${path}。`);
+          }
+          JS
