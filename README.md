@@ -4,13 +4,15 @@
 
 NEUXSBOT 是为短剧、漫剧、动画短片和视频内容创作者打造的 AI 创作工作台。它把故事构思、剧本开发、角色与场景设定、分镜规划，以及图片和视频素材制作放进同一个可视化项目空间，让创作者从创意整理逐步推进到可复用的制作流程。
 
-## 产品预览
+## AI 图像创作灵感
 
-![NEUXSBOT 创作工作台首页](assets/neuxsbot-workbench.webp)
+从角色概念、场景氛围到连续分镜，把文字想法发展成可继续编辑的视觉素材。
 
-![NEUXSBOT 插件市场](assets/neuxsbot-plugin-market.webp)
+![原创角色概念图：月下旅人](assets/neuxsbot-ai-character.svg)
 
-![NEUXSBOT 团队创作工作流](assets/neuxsbot-team-workflow.webp)
+![原创场景概念图：云海之城](assets/neuxsbot-ai-environment.svg)
+
+![原创分镜气氛图：最后一班列车](assets/neuxsbot-ai-storyboard.svg)
 
 ## 创作能力
 
